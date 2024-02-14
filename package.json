@@ -1,14 +1,14 @@
 {
-  "name": "rest",
+  "name": "task",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "marcos marinho",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.20.2",
