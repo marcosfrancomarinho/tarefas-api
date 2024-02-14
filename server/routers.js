@@ -23,9 +23,14 @@ router.post("/", (req, res) => {
     insertDB.bind({
         task: req.body.task,
         done: req.body.done
-    })()
-    res.status(201)
-    res.send({ status: 201 })
+    })().then(() => {
+        queryDB().then(data => {
+            res.status(201)
+            res.type("json")
+            const elm = data[data.length - 1]
+            res.send(JSON.stringify({ tasks: [elm] }))
+        })
+    })
 })
 router.put("/", (req, res) => {
     if (req.body.alter) {

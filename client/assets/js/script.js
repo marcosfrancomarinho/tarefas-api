@@ -13,34 +13,32 @@ window.onload = async () => {
     }).then(res => res)
     if (tasks.status == 200) {
         const tasksOfUser = (await tasks.json()).tasks
-        createList.bind(tasksOfUser)()
+        const container = document.createElement("div")
+        container.className = "task-container"
+        tasksOfUser.forEach(elm => container.appendChild(create.bind(elm)()))
+        $(".response").appendChild(container)
         checkDone()
     }
 }
-function createList() {
-    const container = document.createElement("div")
-    container.className = "task-container"
-    this.forEach(elm => {
-        const content = document.createElement("div")
-        const task = document.createElement("div")
-        const alter = document.createElement("img")
-        alter.addEventListener("click", editOrClear)
-        task.addEventListener("click", done)
-        alter.src = "./assets/images/settings.png"
-        task.innerText = elm.task
-        task.className = "task"
-        content.className = "task-content"
-        alter.className = "alter"
-        alter.id = elm.id
-        alter.dataset.done = elm.done
-        task.id = elm.id
-        content.dataset.done = elm.done
-        alter.dataset.task = elm.task
-        content.appendChild(task)
-        content.appendChild(alter)
-        container.appendChild(content)
-    })
-    $(".response").appendChild(container)
+function create() {
+    const content = document.createElement("div")
+    const task = document.createElement("div")
+    const alter = document.createElement("img")
+    content.className = "task-content"
+    task.className = "task"
+    alter.className = "alter"
+    alter.addEventListener("click", editOrClear)
+    task.addEventListener("click", done)
+    alter.src = "./assets/images/settings.png"
+    task.innerText = this.task
+    alter.id = this.id
+    alter.dataset.done = this.done
+    task.id = this.id
+    content.dataset.done = this.done
+    alter.dataset.task = this.task
+    content.appendChild(task)
+    content.appendChild(alter)
+    return content
 }
 function done() {
     const div = this.parentElement.classList
@@ -122,8 +120,8 @@ function editTask() {
                 }),
             }
         )
+        $("#task").value = ""
     }
-    $("#task").value = ""
 }
 $(".btn-add").onclick = async (event) => {
     event.preventDefault()
@@ -138,7 +136,10 @@ $(".btn-add").onclick = async (event) => {
                 done: false
             }),
         }
-    )
+    ).then(res => res.json()).then(arr => {
+        const task = (create.bind(arr.tasks[0]))()
+        $(".task-container").appendChild(task)
+    })
 }
 function checkDone() {
     document.querySelectorAll(".task-content").forEach(elm => {
