@@ -1,6 +1,6 @@
 const model = require("./model")
 function insertDataDB() {
-    model.create({
+    return model.create({
         task: this.task,
         done: this.done
     })
