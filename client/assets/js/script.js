@@ -150,9 +150,9 @@ function editTask() {
         clear()
     }
 }
-$(".btn-add").onclick = async (event) => {
+$(".btn-add").onclick = (event) => {
     event.preventDefault()
-    await response(
+    response(
         {
             headers: {
                 "Content-Type": "application/json",
