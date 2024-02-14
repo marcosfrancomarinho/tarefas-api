@@ -1,12 +1,6 @@
 const { DataTypes } = require("sequelize")
 const sequelize = require("./connection")
 const model = sequelize.define("tarefas", {
-    id: {
-        autoIncrement: false,
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-    },
     task: {
         autoIncrement: false,
         type: DataTypes.STRING,
@@ -18,11 +12,12 @@ const model = sequelize.define("tarefas", {
         allowNull: false
     }
 })
-
-// sequelize.authenticate()
-// .then(() => console.log("connected database"))
-// .catch(error => console.log(error))
-
-// model.sync({force:true})
-
+function createTableAndAuthenticate() {
+    sequelize.authenticate()
+        .then(() => {
+            console.log("connected database")
+            model.sync({ force: true })
+        })
+        .catch(error => console.log(error))
+}
 module.exports = model
