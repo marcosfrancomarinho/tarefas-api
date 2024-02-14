@@ -112,9 +112,9 @@ function createElement() {
     this.forEach(elm => {
         const element = document.createElement(elm.type)
         element.className = elm.class
-        if (elm.id) element.id = elm.id
+        if (elm.id != undefined) element.id = elm.id
         if (elm.done != undefined) element.dataset.done = elm.done
-        if (elm.task) element.dataset.task = elm.task
+        if (elm.task != undefined) element.dataset.task = elm.task
         if (elm.txt != undefined) element.innerText = elm.txt
         if (elm.src != undefined) element.src = elm.src
         if (elm.event != undefined) element.onclick = elm.event
