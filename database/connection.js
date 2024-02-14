@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize")
 const config = [
     "tarefasdb",
     "root",
-    "*******",
+    "151822",
     {
         host: "localhost",
         dialect: "mysql"

@@ -1,11 +1,11 @@
-
-const response = (method) => fetch("http://localhost:3000/", { ...method })
 const $ = selector => {
     const element = document.querySelectorAll(selector)
     return element.length > 1 ? element : element[0]
 }
-$(".btn-close").onclick = () => $(".card").classList.add("hide")
-
+const response = method => fetch("http://localhost:3000/", { ...method })
+const hide = value => $(".card").classList[value]("hide")
+const clear = () => { $("#task").value = ""; $("#task").focus() }
+$(".btn-close").onclick = () => hide("add")
 window.onload = async () => {
     const tasks = await response({
         headers: { "Content-Type": "application/json" },
@@ -13,29 +13,41 @@ window.onload = async () => {
     }).then(res => res)
     if (tasks.status == 200) {
         const tasksOfUser = (await tasks.json()).tasks
-        const container = document.createElement("div")
-        container.className = "task-container"
+        const [container] = createElement.bind([
+            {
+                type: "div",
+                class: "task-container"
+            }
+        ])()
         tasksOfUser.forEach(elm => container.appendChild(create.bind(elm)()))
         $(".response").appendChild(container)
         checkDone()
     }
 }
 function create() {
-    const content = document.createElement("div")
-    const task = document.createElement("div")
-    const alter = document.createElement("img")
-    content.className = "task-content"
-    task.className = "task"
-    alter.className = "alter"
-    alter.addEventListener("click", editOrClear)
-    task.addEventListener("click", done)
-    alter.src = "./assets/images/settings.png"
-    task.innerText = this.task
-    alter.id = this.id
-    alter.dataset.done = this.done
-    task.id = this.id
-    content.dataset.done = this.done
-    alter.dataset.task = this.task
+    const [content, task, alter] = createElement.bind([
+        {
+            type: "div",
+            class: "task-content",
+            done: this.done
+        },
+        {
+            type: "div",
+            class: "task",
+            id: this.id,
+            txt: this.task,
+            event: done
+        },
+        {
+            type: "img",
+            class: "alter",
+            id: this.id,
+            done: this.done,
+            task: this.task,
+            event: editOrClear,
+            src: "./assets/images/settings.png"
+        }
+    ])()
     content.appendChild(task)
     content.appendChild(alter)
     return content
@@ -72,7 +84,7 @@ function done() {
     }
 }
 function editOrClear() {
-    $(".card").classList.remove("hide")
+    hide("remove")
     $(".btn-delete").onclick = () => removeTask.bind(this)()
     $(".btn-edit").onclick = () => editTask.bind(this)()
 }
@@ -80,7 +92,7 @@ function removeTask() {
     $(".task-container").removeChild(this.parentElement)
     const id = Number(this.id)
     const res = confirm("Deseja exluir esta tarefa?")
-    $(".card").classList.add("hide")
+    hide("add")
     if (res) {
         response(
             {
@@ -95,6 +107,21 @@ function removeTask() {
         )
     }
 }
+function createElement() {
+    const arr = []
+    this.forEach(elm => {
+        const element = document.createElement(elm.type)
+        element.className = elm.class
+        if (elm.id) element.id = elm.id
+        if (elm.done != undefined) element.dataset.done = elm.done
+        if (elm.task) element.dataset.task = elm.task
+        if (elm.txt != undefined) element.innerText = elm.txt
+        if (elm.src != undefined) element.src = elm.src
+        if (elm.event != undefined) element.onclick = elm.event
+        arr.push(element)
+    })
+    return arr
+}
 function editTask() {
     const div = this.parentElement.children[0]
     const id = Number(this.id)
@@ -102,7 +129,7 @@ function editTask() {
     const done = this.dataset.done == 0 ? false : true
     $("#task").value = task
     $("#task").focus()
-    $(".card").classList.add("hide")
+    hide("add")
     $(".btn-add").onclick = (event) => {
         event.preventDefault()
         div.innerText = $("#task").value
@@ -120,7 +147,7 @@ function editTask() {
                 }),
             }
         )
-        $("#task").value = ""
+        clear()
     }
 }
 $(".btn-add").onclick = async (event) => {
@@ -140,6 +167,7 @@ $(".btn-add").onclick = async (event) => {
         const task = (create.bind(arr.tasks[0]))()
         $(".task-container").appendChild(task)
     })
+    clear()
 }
 function checkDone() {
     document.querySelectorAll(".task-content").forEach(elm => {
