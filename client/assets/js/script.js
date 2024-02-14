@@ -1,14 +1,20 @@
-let tasksOfUser = null
+
 const response = (method) => fetch("http://localhost:3000/", { ...method })
 const $ = selector => {
     const element = document.querySelectorAll(selector)
     return element.length > 1 ? element : element[0]
 }
+$(".btn-close").onclick = () => $(".card").classList.add("hide")
+
 window.onload = async () => {
-    const tasks = await response().then(res => res)
+    const tasks = await response({
+        headers: { "Content-Type": "application/json" },
+        method: "GET",
+    }).then(res => res)
     if (tasks.status == 200) {
-        tasksOfUser = (await tasks.json()).tasks
+        const tasksOfUser = (await tasks.json()).tasks
         createList.bind(tasksOfUser)()
+        checkDone()
     }
 }
 function createList() {
@@ -17,35 +23,66 @@ function createList() {
     this.forEach(elm => {
         const content = document.createElement("div")
         const task = document.createElement("div")
-        const alter = document.createElement("button")
+        const alter = document.createElement("img")
         alter.addEventListener("click", editOrClear)
         task.addEventListener("click", done)
-        alter.innerText = "OK"
+        alter.src = "./assets/images/settings.png"
         task.innerText = elm.task
         task.className = "task"
         content.className = "task-content"
         alter.className = "alter"
-        alter.dataset.id = elm.id
+        alter.id = elm.id
         alter.dataset.done = elm.done
+        task.id = elm.id
+        content.dataset.done = elm.done
         alter.dataset.task = elm.task
-        content.appendChild(alter)
         content.appendChild(task)
+        content.appendChild(alter)
         container.appendChild(content)
     })
     $(".response").appendChild(container)
 }
 function done() {
-    alert("feita")
+    const div = this.parentElement.classList
+    const id = Number(this.id)
+    if (div.toggle("done")) {
+        response(
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: "PUT",
+                body: JSON.stringify({
+                    done: true,
+                    id: id
+                }),
+            }
+        )
+    } else {
+        response(
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                method: "PUT",
+                body: JSON.stringify({
+                    done: false,
+                    id: id
+                }),
+            }
+        )
+    }
 }
 function editOrClear() {
-    $(".card").classList.add("show")
+    $(".card").classList.remove("hide")
     $(".btn-delete").onclick = () => removeTask.bind(this)()
     $(".btn-edit").onclick = () => editTask.bind(this)()
 }
 function removeTask() {
-    const id = Number(this.dataset.id)
+    $(".task-container").removeChild(this.parentElement)
+    const id = Number(this.id)
     const res = confirm("Deseja exluir esta tarefa?")
-    $(".card").classList.remove("show")
+    $(".card").classList.add("hide")
     if (res) {
         response(
             {
@@ -61,13 +98,16 @@ function removeTask() {
     }
 }
 function editTask() {
-    const id = Number(this.dataset.id)
+    const div = this.parentElement.children[0]
+    const id = Number(this.id)
     const task = this.dataset.task
+    const done = this.dataset.done == 0 ? false : true
     $("#task").value = task
-    $(".btn-add").innerText = "ALTERAR"
-    $(".card").classList.remove("show")
+    $("#task").focus()
+    $(".card").classList.add("hide")
     $(".btn-add").onclick = (event) => {
         event.preventDefault()
+        div.innerText = $("#task").value
         response(
             {
                 headers: {
@@ -77,26 +117,35 @@ function editTask() {
                 body: JSON.stringify({
                     id: id,
                     task: $("#task").value,
-                    alter: true
+                    alter: true,
+                    done: done
                 }),
             }
         )
     }
+    $("#task").value = ""
 }
-$(".btn-add").onclick = (event) => {
+$(".btn-add").onclick = async (event) => {
     event.preventDefault()
-    const id = tasksOfUser.length + 1
-    response(
+    await response(
         {
             headers: {
                 "Content-Type": "application/json",
             },
             method: "POST",
             body: JSON.stringify({
-                id: id,
                 task: $("#task").value,
                 done: false
             }),
         }
     )
+}
+function checkDone() {
+    document.querySelectorAll(".task-content").forEach(elm => {
+        if (elm.dataset.done == 1) {
+            elm.classList.add("done")
+        } else {
+            elm.classList.remove("done")
+        }
+    })
 }
