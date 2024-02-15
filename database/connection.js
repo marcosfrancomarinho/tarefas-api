@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize")
 const config = [
     "tarefasdb",
     "root",
-    "00000",
+    "151822",
     {
         host: "localhost",
         dialect: "mysql"
@@ -10,3 +10,5 @@ const config = [
 ]
 const sequelize = new Sequelize(...config)
 module.exports = sequelize
+const { createTableAndAuthenticate } = require("./model")
+

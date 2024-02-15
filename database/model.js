@@ -20,4 +20,4 @@ function createTableAndAuthenticate() {
         })
         .catch(error => console.log(error))
 }
-module.exports = model
+module.exports = { model, createTableAndAuthenticate }
