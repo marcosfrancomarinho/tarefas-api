@@ -1,14 +1,12 @@
 const { Sequelize } = require("sequelize")
-const config = [
-    "tarefasdb",
-    "root",
-    "151822",
-    {
-        host: "localhost",
-        dialect:"mysql"
-    }
-]
-const sequelize = new Sequelize(...config)
+require("dotenv").config()
+const sequelize = new Sequelize({
+    username: process.env.USER,
+    password: process.env.PASSWORD,
+    database: process.env.DATABASE,
+    host: process.env.HOST,
+    dialect: "postgres",
+})
+
 module.exports = sequelize
 const { createTableAndAuthenticate } = require("./model")
-createTableAndAuthenticate()
