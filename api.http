@@ -1,0 +1,9 @@
+###
+
+POST http://localhost:3000/tasck 
+Content-Type: application/json
+
+{
+    "name":"dormir" ,
+    "done": false
+}
