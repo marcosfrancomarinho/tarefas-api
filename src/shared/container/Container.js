@@ -1,16 +1,24 @@
 //@ts-check
-import { TasckCreatorHandler } from '../../application/usecase/TasckCreatorHandler.js';
+import { TaskCreatorHandler } from '../../application/usecase/TaskCreatorHandler.js';
+import { TaskFinderHandler } from '../../application/usecase/TaskFinderHandler.js';
 import { UUID } from '../../infrastructure/genereteId/UUID.js';
-import { SequelizeTasckCreator } from '../../infrastructure/repository/SequelizeTasckCreator.js';
-import { TasckCreatorControllers } from '../../presentation/controllers/TasckCreatorControllers.js';
+import { SequelizeTaskCreator } from '../../infrastructure/repository/SequelizeTaskCreator.js';
+import { SequelizeTaskFinder } from '../../infrastructure/repository/SequelizeTaskFinder.js';
+import { TaskCreatorControllers } from '../../presentation/controllers/TaskCreatorControllers.js';
+import { TaskFinderControllers } from '../../presentation/controllers/TaskFinderControllers.js';
 
 export class Container {
   static dependences() {
     const uuid = new UUID();
-    const tasckCreatorRespository = new SequelizeTasckCreator();
-    const tasckCreatorHandler = new TasckCreatorHandler(tasckCreatorRespository, uuid);
-    const tasckCreatorControllers = new TasckCreatorControllers(tasckCreatorHandler);
 
-    return { tasckCreatorControllers };
+    const taskCreatorRespository = new SequelizeTaskCreator();
+    const taskCreatorHandler = new TaskCreatorHandler(taskCreatorRespository, uuid);
+    const taskCreatorControllers = new TaskCreatorControllers(taskCreatorHandler);
+
+    const taskFinderRepository = new SequelizeTaskFinder();
+    const taskFinderHandler = new TaskFinderHandler(taskFinderRepository);
+    const taskFinderControllers = new TaskFinderControllers(taskFinderHandler);
+
+    return { taskCreatorControllers, taskFinderControllers };
   }
 }

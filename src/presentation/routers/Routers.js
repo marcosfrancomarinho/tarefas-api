@@ -5,8 +5,9 @@ export class Routers {
    * @param {import('express').Express} app
    */
   static start(app) {
-    const { tasckCreatorControllers } = Container.dependences();
+    const { taskCreatorControllers, taskFinderControllers } = Container.dependences();
 
-    app.post('/tasck', tasckCreatorControllers.execute.bind(tasckCreatorControllers));
+    app.post('/create-task', taskCreatorControllers.execute.bind(taskCreatorControllers));
+    app.get('/find-task-all', taskFinderControllers.execute.bind(taskFinderControllers));
   }
 }

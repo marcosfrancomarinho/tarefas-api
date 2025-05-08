@@ -3,7 +3,7 @@ import { Done } from '../valuesobject/Done.js';
 import { ID } from '../valuesobject/ID.js';
 import { Name } from '../valuesobject/Name.js';
 
-export class Tasck {
+export class Task {
   #id;
   #name;
   #done;
@@ -31,9 +31,9 @@ export class Tasck {
    * @param {ID} id
    * @param {Name} name
    * @param {Done} done
-   * @returns {Tasck}
+   * @returns {Task}
    */
   static create(id, name, done) {
-    return new Tasck(id, name, done);
+    return new Task(id, name, done);
   }
 }

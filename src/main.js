@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import { Routers } from './presentation/routers/Routers.js';
 import { HandlerError } from './presentation/middlewares/HandlerError.js';
+
 const app = express();
 const port = Number(process.env.PORT ?? '3000');
 
