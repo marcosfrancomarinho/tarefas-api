@@ -1,15 +1,27 @@
 ###
 
-POST http://localhost:3000/create-task
+POST http://localhost:3000/create-task 
 Content-Type: application/json
 
 {
-    "name":"estudar banco de dados" ,
+    "name": "almoçar sexta feira",
     "done": false
 }
 
 ###
+
 GET http://localhost:3000/find-task-all
 
 ###
-DELETE http://localhost:3000/delete-task/f0bd60b7-a5df-4bb1-8c57-b48065a34530
+
+DELETE http://localhost:3000/delete-task/f8a9d10a-e78c-4c21-a063-aee9a117ae1d
+
+###
+
+PUT http://localhost:3000/task-done 
+Content-Type: application/json
+
+{
+    "id": "32cbb4c4-b337-4364-a8dd-af6d23622ba7",
+    "done": true
+}

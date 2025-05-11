@@ -9,6 +9,7 @@ export class TaskCreatorControllers {
     this.#taskCreatorHandler = taskCreatorHandler;
   }
 
+  
   /**
    * @param {import('express').Request} request
    * @param {import('express').Response} response
@@ -21,7 +22,6 @@ export class TaskCreatorControllers {
       const taskCreated = await this.#taskCreatorHandler.create(requestDTO);
       response.status(200).json({ taskId: taskCreated.idTask, msg: 'task create success' });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

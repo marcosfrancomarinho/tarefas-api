@@ -16,8 +16,8 @@ export class TaskFinderControllers {
    */
   async execute(request, response, next) {
     try {
-      const taskFound = await this.#taskFinderHandler.findAll();
-      response.status(200).json(taskFound);
+      const tasksFound = await this.#taskFinderHandler.findAll();
+      response.status(200).json(tasksFound);
     } catch (error) {
       next(error);
     }
