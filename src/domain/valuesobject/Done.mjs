@@ -2,9 +2,7 @@
 
 export class Done {
   #done;
-  /**
-   * @param {boolean} done
-   */
+  /** @param {boolean} done */
   constructor(done) {
     this.#done = done;
   }
@@ -13,7 +11,6 @@ export class Done {
     return this.#done;
   }
   /**
-   *
    * @param {boolean} done
    * @returns {Done}
    */
@@ -22,6 +19,7 @@ export class Done {
     return new Done(done);
   }
 
+  /** @param {boolean} done  */
   static #validate(done) {
     const checked = typeof done !== 'boolean' && typeof done !== 'number';
     if (checked) {

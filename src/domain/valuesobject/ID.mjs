@@ -1,15 +1,13 @@
 //@ts-check
 export class ID {
   #id;
-  /**
-   * @param {string} id
-   */
+  /** @param {string} id */
   constructor(id) {
     this.#id = id;
   }
 
   getValue() {
-    return this.#id
+    return this.#id;
   }
   /**
    * @param {string} id
@@ -20,6 +18,7 @@ export class ID {
     return new ID(id.trim());
   }
 
+  /** @param {string} id  */
   static #validate(id) {
     const isNotEmpty = /^(?!\s*$).+/;
     const checked = !id || !isNotEmpty.test(id) || typeof id !== 'string';

@@ -1,6 +1,6 @@
 //@ts-check
 import { DataTypes } from 'sequelize';
-import { Database } from './Database.js';
+import { Database } from './Database.mjs';
 
 export class Scheme {
   static model() {

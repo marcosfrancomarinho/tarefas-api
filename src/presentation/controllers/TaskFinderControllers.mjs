@@ -1,12 +1,10 @@
 //@ts-check
 
-import { TaskFinderHandler } from '../../application/usecase/TaskFinderHandler.js';
+import { TaskFinderHandler } from '../../application/usecase/TaskFinderHandler.mjs';
 
 export class TaskFinderControllers {
   #taskFinderHandler;
-  /**
-   * @param {TaskFinderHandler} taskFinderHandler
-   */
+  /** @param {TaskFinderHandler} taskFinderHandler */
   constructor(taskFinderHandler) {
     this.#taskFinderHandler = taskFinderHandler;
   }

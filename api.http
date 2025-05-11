@@ -4,9 +4,12 @@ POST http://localhost:3000/create-task
 Content-Type: application/json
 
 {
-    "name":"estudar" ,
+    "name":"estudar banco de dados" ,
     "done": false
 }
 
 ###
 GET http://localhost:3000/find-task-all
+
+###
+DELETE http://localhost:3000/delete-task/f0bd60b7-a5df-4bb1-8c57-b48065a34530

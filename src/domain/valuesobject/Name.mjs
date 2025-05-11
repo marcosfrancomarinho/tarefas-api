@@ -1,9 +1,7 @@
 //@ts-check
 export class Name {
   #name;
-  /**
-   * @param {string} name
-   */
+  /** @param {string} name */
   constructor(name) {
     this.#name = name;
   }
@@ -19,7 +17,7 @@ export class Name {
     this.#validate(name);
     return new Name(name.trim());
   }
-
+  /** @param {string} name  */
   static #validate(name) {
     const isNotEmpty = /^(?!\s*$).+/;
     const checked = !name || !isNotEmpty.test(name) || typeof name !== 'string';

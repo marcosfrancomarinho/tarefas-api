@@ -3,10 +3,9 @@
 import { Sequelize } from 'sequelize';
 
 export class Database {
+  /**@type {Sequelize} */
   static connection;
-  /**
-   * @returns {Sequelize}
-   */
+  /**@returns {Sequelize}*/
   static connect() {
     if (!this.connection) {
       this.connection = new Sequelize({
